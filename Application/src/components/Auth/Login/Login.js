@@ -1,98 +1,129 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "../../Toast/Toast";
-import backImage from "./images/bg-01.jpg";
-import { IonLoading } from "@ionic/react";
+import React, { useState, useCallback } from "react";
+import { withRouter } from "react-router-dom";
 
-import "./gg.css";
-import "./util.css";
+import firebase from "../../../FirebaseConfig";
 
-const Home = props => {
-	const [busy, setBusy] = useState(false);
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
+import classes from "./Login.module.css";
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+const isValid = (email, passwd) => {
+	const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+	const validEmail = emailRegex.test(email);
+	const validPasswd = passwd.length >= 6;
+	return validEmail && validPasswd;
+};
 
-	const handleLogin = async () => {
-		setBusy(true);
-		console.log(email);
-		console.log(password);
-		setBusy(false);
-		toast("Succ logged in", 4000);
-		props.history.replace("/home");
-	};
+const Login = props => {
+	const { history, setFormDisplay } = props;
+	const [hiddenPassword, setHiddenPassword] = useState(true);
+	const [formError, setFormError] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState(null);
+
+	const handleSignIn = useCallback(
+		async (email, password) => {
+			try {
+				await firebase.auth().signInWithEmailAndPassword(email, password);
+				setIsLoading(false);
+				console.log("here");
+				history.push("/");
+			} catch (err) {
+				setError(err);
+				setIsLoading(false);
+			}
+		},
+		[history]
+	);
+
+	const formSubmit = useCallback(
+		event => {
+			event.preventDefault();
+			setError(null);
+			setIsLoading(true);
+			const { email, password } = event.target.elements;
+			if (isValid(email.value, password.value)) {
+				handleSignIn(email.value, password.value);
+				setFormError(false);
+			} else {
+				setFormError(true);
+				setIsLoading(false);
+			}
+		},
+		[handleSignIn]
+	);
 
 	return (
-		<>
-			<IonLoading message="Please wait" duration={0} isOpen={busy}></IonLoading>
-			<div className="limiter">
-				<div className="container-login100">
-					<div className="wrap-login100">
-						<div className="login100-form validate-form">
-							<span className="login100-form-title p-b-34">Account Login</span>
-							<div
-								className="wrap-input100 rs1-wrap-input100 validate-input m-b-20"
-								data-validate="Type user name"
-							>
-								<input
-									id="first-name"
-									className="input100"
-									type="text"
-									name="username"
-									onChange={event => {
-										setEmail(event.target.value);
-									}}
-									placeholder="User name"
-								/>
-								<span className="focus-input100"></span>
-							</div>
-
-							<div
-								className="wrap-input100 rs2-wrap-input100 validate-input m-b-20"
-								data-validate="Type password"
-							>
-								<input
-									className="input100"
-									type="password"
-									name="pass"
-									onChange={event => {
-										setPassword(event.target.value);
-									}}
-									placeholder="Password"
-								/>
-								<span className="focus-input100"></span>
-							</div>
-
-							<div className="container-login100-form-btn">
-								<button onClick={handleLogin} className="login100-form-btn">
-									Sign in
-								</button>
-							</div>
-
-							<div className="w-full text-center p-t-27 p-b-239">
-								<span className="txt1">Forgot</span>
-
-								<a href="/" className="txt2">
-									User name / password?
-								</a>
-							</div>
-
-							<div className="w-full text-center">
-								<Link className="txt3" to="/regiter">
-									Sign Up
-								</Link>
-							</div>
-						</div>
-
-						<div
-							className="login100-more"
-							style={{ backgroundImage: `url(${backImage})` }}
-						></div>
-					</div>
-				</div>
-			</div>
-		</>
+		<section className={classes.login}>
+			<Container>
+				<Row className="py-2">
+					<Col
+						md={12}
+						className="my-2 p-2 d-flex justify-content-center align-items-center"
+					>
+						<Card className={classes.loginCard} body>
+							<h2>Login</h2>
+							<Form onSubmit={formSubmit}>
+								{formError && (
+									<Alert variant="danger">Invalid email or password!</Alert>
+								)}
+								{error && <Alert variant="danger">{error.message}</Alert>}
+								<Form.Group controlId="formBasicEmail">
+									<Form.Label>Email address</Form.Label>
+									<Form.Control
+										name="email"
+										type="email"
+										placeholder="Enter email"
+									/>
+								</Form.Group>
+								<Form.Group controlId="formBasicPassword">
+									<Form.Label>Password</Form.Label>
+									<Form.Control
+										name="password"
+										type={hiddenPassword ? "password" : "text"}
+										placeholder="Password"
+									/>
+								</Form.Group>
+								<Form.Group controlId="formBasicCheckbox">
+									<Form.Check
+										type="checkbox"
+										label="Show Password"
+										onChange={event => setHiddenPassword(!hiddenPassword)}
+									/>
+								</Form.Group>
+								<Button
+									className={classes.loginButton}
+									variant="primary"
+									type="submit"
+								>
+									Login&nbsp;&nbsp;
+									{isLoading && (
+										<Spinner animation="grow" role="status">
+											<span className="sr-only">Loading...</span>
+										</Spinner>
+									)}
+								</Button>
+								<div className="mt-3">
+									<span
+										className={classes.mockLink}
+										onClick={e => setFormDisplay("register")}
+									>
+										Create an account
+									</span>
+								</div>
+							</Form>
+						</Card>
+					</Col>
+				</Row>
+			</Container>
+		</section>
 	);
 };
 
-export default Home;
+export default withRouter(Login);

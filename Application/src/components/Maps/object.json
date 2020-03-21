@@ -1,0 +1,161 @@
+{
+	"response": {
+		"metaInfo": {
+			"timestamp": "2020-03-21T17:30:38Z",
+			"mapVersion": "8.30.106.154",
+			"moduleVersion": "7.2.202010-6650",
+			"interfaceVersion": "2.6.76",
+			"availableMapVersion": ["8.30.106.154"]
+		},
+		"route": [
+			{
+				"waypoint": [
+					{
+						"linkId": "+724151421",
+						"mappedPosition": {
+							"latitude": 52.5168776,
+							"longitude": 13.3884681
+						},
+						"originalPosition": {
+							"latitude": 52.5168583,
+							"longitude": 13.3884717
+						},
+						"type": "stopOver",
+						"spot": 0.4545455,
+						"sideOfStreet": "right",
+						"mappedRoadName": "Unter den Linden",
+						"label": "Unter den Linden - B2",
+						"shapeIndex": 0,
+						"source": "user"
+					},
+					{
+						"linkId": "+1202668075",
+						"mappedPosition": {
+							"latitude": 52.5173162,
+							"longitude": 13.3946827
+						},
+						"originalPosition": {
+							"latitude": 52.5173382,
+							"longitude": 13.3946784
+						},
+						"type": "stopOver",
+						"spot": 0.7346939,
+						"sideOfStreet": "left",
+						"mappedRoadName": "Unter den Linden",
+						"label": "Unter den Linden - B2",
+						"shapeIndex": 6,
+						"source": "user"
+					}
+				],
+				"mode": {
+					"type": "fastest",
+					"transportModes": ["car"],
+					"trafficMode": "disabled",
+					"feature": []
+				},
+				"leg": [
+					{
+						"start": {
+							"linkId": "+724151421",
+							"mappedPosition": {
+								"latitude": 52.5168776,
+								"longitude": 13.3884681
+							},
+							"originalPosition": {
+								"latitude": 52.5168583,
+								"longitude": 13.3884717
+							},
+							"type": "stopOver",
+							"spot": 0.4545455,
+							"sideOfStreet": "right",
+							"mappedRoadName": "Unter den Linden",
+							"label": "Unter den Linden - B2",
+							"shapeIndex": 0,
+							"source": "user"
+						},
+						"end": {
+							"linkId": "+1202668075",
+							"mappedPosition": {
+								"latitude": 52.5173162,
+								"longitude": 13.3946827
+							},
+							"originalPosition": {
+								"latitude": 52.5173382,
+								"longitude": 13.3946784
+							},
+							"type": "stopOver",
+							"spot": 0.7346939,
+							"sideOfStreet": "left",
+							"mappedRoadName": "Unter den Linden",
+							"label": "Unter den Linden - B2",
+							"shapeIndex": 6,
+							"source": "user"
+						},
+						"length": 706,
+						"travelTime": 139,
+						"maneuver": [
+							{
+								"position": { "latitude": 52.5168776, "longitude": 13.3884681 },
+								"instruction": "Head toward <span class=\"toward_street\">Friedrichstraße</span> on <span class=\"street\">Unter den Linden</span> <span class=\"number\">(B2/B5)</span>. <span class=\"distance-description\">Go for <span class=\"length\">25 m</span>.</span>",
+								"travelTime": 7,
+								"length": 25,
+								"id": "M1",
+								"_type": "PrivateTransportManeuverType"
+							},
+							{
+								"position": { "latitude": 52.5169015, "longitude": 13.3888257 },
+								"instruction": "Turn <span class=\"direction\">right</span> onto <span class=\"next-street\">Friedrichstraße</span>. <span class=\"distance-description\">Go for <span class=\"length\">139 m</span>.</span>",
+								"travelTime": 27,
+								"length": 139,
+								"id": "M2",
+								"_type": "PrivateTransportManeuverType"
+							},
+							{
+								"position": { "latitude": 52.5156462, "longitude": 13.3890402 },
+								"instruction": "Turn <span class=\"direction\">left</span> onto <span class=\"next-street\">Behrenstraße</span>. <span class=\"distance-description\">Go for <span class=\"length\">312 m</span>.</span>",
+								"travelTime": 65,
+								"length": 312,
+								"id": "M3",
+								"_type": "PrivateTransportManeuverType"
+							},
+							{
+								"position": { "latitude": 52.5159252, "longitude": 13.3936322 },
+								"instruction": "Turn <span class=\"direction\">left</span> onto <span class=\"next-street\">Bebelplatz</span>. <span class=\"distance-description\">Go for <span class=\"length\">146 m</span>.</span>",
+								"travelTime": 32,
+								"length": 146,
+								"id": "M4",
+								"_type": "PrivateTransportManeuverType"
+							},
+							{
+								"position": { "latitude": 52.5172341, "longitude": 13.3934498 },
+								"instruction": "Turn <span class=\"direction\">right</span> onto <span class=\"next-street\">Bebelplatz</span> <span class=\"number\">(B2/B5)</span>. <span class=\"distance-description\">Go for <span class=\"length\">84 m</span>.</span>",
+								"travelTime": 8,
+								"length": 84,
+								"id": "M5",
+								"_type": "PrivateTransportManeuverType"
+							},
+							{
+								"position": { "latitude": 52.5173162, "longitude": 13.3946827 },
+								"instruction": "Arrive at <span class=\"street\">Unter den Linden</span> <span class=\"number\">(B2/B5)</span>. Your destination is on the left.",
+								"travelTime": 0,
+								"length": 0,
+								"id": "M6",
+								"_type": "PrivateTransportManeuverType"
+							}
+						]
+					}
+				],
+				"summary": {
+					"distance": 706,
+					"trafficTime": 153,
+					"baseTime": 139,
+					"flags": ["builtUpArea"],
+					"text": "The trip takes <span class=\"length\">706 m</span> and <span class=\"time\">2 mins</span>.",
+					"travelTime": 139,
+					"_type": "RouteSummaryType"
+				}
+			}
+		],
+		"language": "en-us"
+	}
+}

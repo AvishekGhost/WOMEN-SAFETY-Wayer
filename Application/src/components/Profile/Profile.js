@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FormLabel, ListGroupItem, Card } from "react-bootstrap";
+import { IonButton } from "@ionic/react";
+
+import { AuthContext } from "../../context/authContext";
+import { handleLogout } from "../../utility";
 
 const Profile = props => {
+	const { currentUser } = useContext(AuthContext);
+	const { history } = props;
+
+	const signOut = () => {
+		handleLogout().then(() => {
+			history.push("/");
+		});
+	};
+
 	return (
 		<>
 			<ListGroupItem>
@@ -10,7 +23,6 @@ const Profile = props => {
 					alt="ukr pic loading"
 				></img>
 			</ListGroupItem>
-
 			<ListGroupItem>
 				<FormLabel>Name</FormLabel>
 				<Card.Text>UTTAM KUMAR ROY</Card.Text>
@@ -30,6 +42,8 @@ const Profile = props => {
 
 				<Card.Text>Some Description</Card.Text>
 			</ListGroupItem>
+			<IonButton onClick={signOut}>Logout</IonButton>
+			{console.log(currentUser.email)}
 		</>
 	);
 };
