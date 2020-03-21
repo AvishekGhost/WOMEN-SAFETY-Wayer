@@ -1,0 +1,9 @@
+{
+  "name": "Reacr Ionic",
+  "type": "custom",
+  "bundleWebRuntime": false,
+  "webDie": "public",
+  "integrations": {
+    "capacitor": {}
+  }
+}
