@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import { toast } from "../Toast/Toast";
+import { IonInput, IonButton, IonItem, IonLabel, IonText } from "@ionic/react";
+
+import Red from "./Red.svg";
+import Blue from "./Blue.svg";
+import Green from "./Green.svg";
 
 import cords from "./cord.json";
 
@@ -52,6 +57,42 @@ export const DisplayMapFC = ({ currentLocation }) => {
 			hMap.getViewModel().setLookAtData({ bounds: routeLine.getBoundingBox() });
 		});
 
+		//52.517100760,13.3905424488;52.5169701849,13.391808451
+		const avoidMarker = new H.map.Icon(Red);
+		const avoidLocation = new window.H.map.Marker(
+			{ lat: 52.51710076, lng: 13.3905424488 },
+			{ icon: avoidMarker }
+		);
+
+		const avoidLocation1 = new window.H.map.Marker(
+			{ lat: 52.5169701849, lng: 13.391808451 },
+			{ icon: avoidMarker }
+		);
+		hMap.addObject(avoidLocation1);
+		hMap.addObject(avoidLocation);
+
+		//user location
+		const userMarker = new H.map.Icon(Blue);
+		const donorLocation = new window.H.map.Marker(
+			{
+				lat: 52.516858379,
+				lng: 13.3884717
+			},
+			{ icon: userMarker }
+		);
+		hMap.addObject(donorLocation);
+
+		//des marker
+		const desMarker = new H.map.Icon(Green);
+		const donorLocation1 = new window.H.map.Marker(
+			{
+				lat: 52.51733824,
+				lng: 13.394678415
+			},
+			{ icon: desMarker }
+		);
+		hMap.addObject(donorLocation1);
+
 		return () => {
 			hMap.dispose();
 		};
@@ -87,14 +128,44 @@ export const DisplayMapFC = ({ currentLocation }) => {
 		toast("Noob", 4000);
 	};
 
-	const someSHit = "100vh";
+	const someSHit = "70vh";
 
+	const la = 52.51733824;
+	const lo = 13.394678415;
 	return (
 		<>
 			<div className="map" ref={mapRef} style={{ height: someSHit }} />
-			<button onClick={ggFun}>
-				click this button to add a marker at 12 12
-			</button>
+			<IonItem>
+				<IonLabel>Enter Destination</IonLabel>
+			</IonItem>
+			<IonItem>
+				<IonLabel>Lat: </IonLabel>
+				<IonInput val={la} />
+				<IonLabel>Lon: </IonLabel>
+				<IonInput val={lo} />
+				<IonButton onClick={ggFun}>Show Route</IonButton>
+			</IonItem>
+
+			<IonItem>
+				<IonItem>
+					<IonText>
+						Your Location
+						<img src={Blue} height="50px" width="50px" alt="" />
+					</IonText>
+				</IonItem>
+				<IonItem>
+					<IonText>
+						Destination
+						<img src={Green} height="50px" width="50px" alt="" />
+					</IonText>
+				</IonItem>
+				<IonItem>
+					<IonText>
+						Unsafe Location
+						<img src={Red} height="50px" width="50px" alt="" />
+					</IonText>
+				</IonItem>
+			</IonItem>
 		</>
 	);
 };

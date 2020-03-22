@@ -147,7 +147,7 @@ const Forum = () => {
 				<IonText> current Node: {currentNode}</IonText>
 			</IonItem>
 
-			<IonButton onClick={changeNode}>change Node</IonButton>
+			{/* <IonButton onClick={changeNode}>change Node</IonButton> */}
 		</>
 	);
 };
