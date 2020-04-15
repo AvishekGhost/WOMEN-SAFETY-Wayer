@@ -1,213 +1,242 @@
 import React, { useState, useCallback } from "react";
 import { withRouter } from "react-router-dom";
-import {
-	IonContent,
-	IonInput,
-	IonButton,
-	IonItem,
-	IonLoading,
-	IonText
-} from "@ionic/react";
 
-import firebase, { storage } from "../../../FirebaseConfig";
+import firebase from "../../../FirebaseConfig";
 import { writeUserData } from "../../../utility";
-import { toast } from "../../Toast/Toast";
 
-const Signup = props => {
-	// const [image, setImage] = useState(null);
-	// const [fileURL, setfileURL] = useState(null);
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
+import classes from "./Register.module.css";
 
-	// const [productName, setProductName] = useState("");
-	// const [productDescription, setProductDescription] = useState("");
-	// const [productPrice, setProductPrice] = useState("");
-	// const [productType, setProductType] = useState("");
-	// const [productQuantity, setProductQuantity] = useState("");
+const Signup = (props) => {
+  const { history, setFormDisplay } = props;
+  const [hiddenPassword, setHiddenPassword] = useState(true);
+  const [formError, setFormError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-	// const [busy, setBusy] = useState(false);
+  const handleSignUp = useCallback(
+    async (
+      email,
+      password,
+      userName,
+      age,
+      gender,
+      imageURL,
+      address,
+      phone,
+      aadhar,
+      SOS_phone
+    ) => {
+      try {
+        const userCredentials = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
 
-	// const handleChange = event => {
-	// 	if (event.target.files[0]) {
-	// 		setImage(event.target.files[0]);
-	// 		setfileURL(URL.createObjectURL(event.target.files[0]));
-	// 	}
-	// };
+        writeUserData(
+          userCredentials.user.uid,
+          userName,
+          email,
+          age,
+          gender,
+          imageURL,
+          address,
+          phone,
+          aadhar,
+          SOS_phone
+        );
+        setIsLoading(false);
+        history.push("/");
+      } catch (err) {
+        setError(err);
+        setIsLoading(false);
+      }
+    },
+    [history]
+  );
 
-	// const clearFields = () => {
-	// 	setImage(null);
-	// 	setfileURL(null);
-	// 	setProductName("");
-	// 	setProductDescription("");
-	// 	setProductPrice("");
-	// 	setProductType("");
-	// };
+  const formSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      setError(null);
 
-	// const uploadFulldata = async url => {
-	// 	try {
-	// 		const userCredentials = await firebase
-	// 			.auth()
-	// 			.createUserWithEmailAndPassword(email, password);
-	// 		writeUserData(userCredentials.user.uid, userName, email);
-	// 		toast("", 4000);
-	// 		history.push("/");
-	// 	} catch (err) {
-	// 		toast("", 4000);
-	// 		return false;
-	// 	}
-	// };
+      const {
+        username,
+        email,
+        password,
+        age,
+        gender,
+        imageURL,
+        address,
+        phone,
+        aadhar,
+        SOS_phone,
+      } = event.target.elements;
 
-	// const handleUpload = () => {
-	// 	setBusy(true);
+      console.log(
+        username,
+        email,
+        password,
+        age,
+        gender,
+        imageURL,
+        address,
+        phone,
+        aadhar,
+        SOS_phone
+      );
 
-	// 	if (
-	// 		productName.trim() === "" ||
-	// 		productDescription.trim() === "" ||
-	// 		productPrice.trim() === "" ||
-	// 		productQuantity.trim() === "" ||
-	// 		productType.trim() === ""
-	// 	) {
-	// 		setBusy(false);
-	// 		return toast("Inputs cannot be empty");
-	// 	}
+      setIsLoading(true);
+      setFormError(false);
+      handleSignUp(
+        email.value,
+        password.value,
+        username.value,
+        age,
+        gender,
+        imageURL,
+        address,
+        phone,
+        aadhar,
+        SOS_phone
+      );
+    },
+    [handleSignUp]
+  );
 
-	// 	const currentdate = new Date();
-	// 	const dateTime =
-	// 		currentdate.getDate() +
-	// 		"." +
-	// 		currentdate.getMonth() +
-	// 		"." +
-	// 		currentdate.getFullYear() +
-	// 		"@" +
-	// 		currentdate.getHours() +
-	// 		":" +
-	// 		currentdate.getMinutes() +
-	// 		":" +
-	// 		currentdate.getSeconds();
-
-	// 	if (image) {
-	// 		const id = dateTime + image.name;
-	// 		const uploadTask = storage.ref(`products/${id}`).put(image);
-	// 		uploadTask.on(
-	// 			"state_changed",
-	// 			snapshot => {},
-	// 			error => {
-	// 				console.log(error);
-	// 			},
-	// 			() => {
-	// 				storage
-	// 					.ref("products")
-	// 					.child(id)
-	// 					.getDownloadURL()
-	// 					.then(url => {
-	// 						if (uploadFulldata(url, dateTime)) {
-	// 							clearFields();
-	// 							toast("product uploaded successfiully", 4000);
-	// 						}
-	// 						setBusy(false);
-	// 					});
-	// 			}
-	// 		);
-	// 	} else {
-	// 		setBusy(false);
-	// 		return toast("cant submit without image");
-	// 	}
-	// };
-
-	// const handleSignUp = useCallback(
-	// 	async (email, password, userName) => {
-	// 		try {
-	// 			const userCredentials = await firebase
-	// 				.auth()
-	// 				.createUserWithEmailAndPassword(email, password);
-	// 			writeUserData(userCredentials.user.uid, userName, email);
-	// 			history.push("/");
-	// 		} catch (err) {
-	// 			setError(err);
-	// 			setIsLoading(false);
-	// 		}
-	// 	},
-	// 	[history]
-	// );
-
-	// const formSubmit = useCallback(
-	// 	event => {
-	// 		event.preventDefault();
-
-	// 		const { username, email, password } = event.target.elements;
-
-	// 		handleSignUp(email.value, password.value, username.value);
-	// 	},
-	// 	[handleSignUp]
-	// );
-
-	// return (
-	// 	<>
-	// 		<IonContent style={{ textAlign: "center" }}>
-	// 			<IonLoading
-	// 				message="please wait"
-	// 				duration={0}
-	// 				isOpen={busy}
-	// 			></IonLoading>
-	// 			<IonItem>
-	// 				<IonText>Photo </IonText>
-	// 				<input type="file" onChange={handleChange} />
-	// 			</IonItem>
-	// 			<IonItem>
-	// 				<img src={fileURL} alt=""></img>
-	// 			</IonItem>
-	// 			<IonItem>
-	// 				<IonInput
-	// 					value={productType}
-	// 					onIonChange={event => setProductType(event.target.value)}
-	// 					placeholder="Type"
-	// 					type="text"
-	// 					required
-	// 				/>
-	// 			</IonItem>
-	// 			<IonItem>
-	// 				<IonInput
-	// 					value={productName}
-	// 					onIonChange={event => setProductName(event.target.value)}
-	// 					placeholder="Product Name"
-	// 					type="email"
-	// 					required
-	// 				/>
-	// 			</IonItem>
-	// 			<IonItem>
-	// 				<IonInput
-	// 					value={productDescription}
-	// 					onIonChange={event => setProductDescription(event.target.value)}
-	// 					placeholder="Description"
-	// 					type="text"
-	// 					required
-	// 				/>
-	// 			</IonItem>
-	// 			<IonItem>
-	// 				<IonInput
-	// 					value={productPrice}
-	// 					onIonChange={event => setProductPrice(event.target.value)}
-	// 					placeholder="Price"
-	// 					type="number"
-	// 					required
-	// 				/>
-	// 			</IonItem>
-
-	// 			<IonItem>
-	// 				<IonInput
-	// 					value={productQuantity}
-	// 					onIonChange={event => setProductQuantity(event.target.value)}
-	// 					placeholder="Quantity"
-	// 					type="number"
-	// 					required
-	// 				/>
-	// 			</IonItem>
-
-	// 			<IonButton className="ion-padding" onClick={handleUpload}>
-	// 				Upload
-	// 			</IonButton>
-	// 		</IonContent>
-	// 	</>
-	// );
-	return <h1>gg</h1>;
+  return (
+    <section className={classes.signup}>
+      <Container>
+        <Row className="py-2">
+          <Col
+            md={12}
+            className="my-2 p-2 d-flex justify-content-center align-items-center"
+          >
+            <Card className={classes.signupCard} body>
+              <h2>Register</h2>
+              <Form onSubmit={formSubmit}>
+                {formError && (
+                  <Alert variant="danger">Invalid email or password!</Alert>
+                )}
+                {error && <Alert variant="danger">{error.message}</Alert>}
+                <Form.Group controlId="formBasicName">
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control
+                    name="username"
+                    type="text"
+                    placeholder="Enter username"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                    name="email"
+                    type="email"
+                    placeholder="Enter email"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    name="password"
+                    type={hiddenPassword ? "password" : "text"}
+                    placeholder="Password"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicAge">
+                  <Form.Label>Age</Form.Label>
+                  <Form.Control
+                    name="age"
+                    type="number"
+                    placeholder="Enter Age"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicGender">
+                  <Form.Label>Gender</Form.Label>
+                  <Form.Control
+                    name="gender"
+                    type="text"
+                    placeholder="Enter Gender"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicImageURL">
+                  <Form.Label>Image URL</Form.Label>
+                  <Form.Control
+                    name="imageURL"
+                    type="text"
+                    placeholder="Enter imageURL"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicAddress">
+                  <Form.Label>Address</Form.Label>
+                  <Form.Control
+                    name="address"
+                    type="text"
+                    placeholder="Enter address"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicPhone">
+                  <Form.Label>phone</Form.Label>
+                  <Form.Control
+                    name="phone"
+                    type="number"
+                    placeholder="Enter address"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicAadhar">
+                  <Form.Label>Aadhar</Form.Label>
+                  <Form.Control
+                    name="aadhar"
+                    type="number"
+                    placeholder="Enter Aadhar"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicSOS_phone">
+                  <Form.Label>SOS_phone</Form.Label>
+                  <Form.Control
+                    name="SOS_phone"
+                    type="number"
+                    placeholder="Enter SOS_phone"
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicCheckbox">
+                  <Form.Check
+                    type="checkbox"
+                    label="Show Password"
+                    onChange={(event) => setHiddenPassword(!hiddenPassword)}
+                  />
+                </Form.Group>
+                <Button
+                  className={classes.signupButton}
+                  variant="primary"
+                  type="submit"
+                >
+                  Sign Up&nbsp;&nbsp;
+                  {isLoading && (
+                    <Spinner animation="grow" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </Spinner>
+                  )}
+                </Button>
+                <div className="mt-3">
+                  Already have an account?{" "}
+                  <span
+                    className={classes.mockLink}
+                    onClick={(e) => setFormDisplay("login")}
+                  >
+                    Login
+                  </span>
+                </div>
+              </Form>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </section>
+  );
 };
 
 export default withRouter(Signup);

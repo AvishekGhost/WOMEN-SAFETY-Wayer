@@ -1,53 +1,48 @@
 import firebase, { firestore } from "./FirebaseConfig";
 
 export const handleLogout = async () => {
-	try {
-		await firebase.auth().signOut();
-	} catch (err) {
-		console.log(err);
-	}
+  try {
+    await firebase.auth().signOut();
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const writeUserData = async (
-	userId,
-	name,
-	email,
-	age,
-	gender,
-	imageURL = "",
-	address,
-	phone,
-	aadhar,
-	SOS_phone
+  userId,
+  username,
+  email,
+  age,
+  gender,
+  imageURL = "",
+  address,
+  phone,
+  aadhar,
+  SOS_phone
 ) => {
-	try {
-		firestore
-			.collection("users")
-			.doc(userId)
-			.set({
-				name: name,
-				email: email,
-				gender: gender,
-				age: age,
-				aadhar: aadhar,
-				imageURL: imageURL,
-				address: address,
-				phone: phone,
-				SOS_phone: SOS_phone
-			});
-	} catch (err) {
-		console.log(err);
-	}
+  try {
+    console.log(username);
+    firestore.collection("users").doc(userId).set({
+      name: username,
+      email: email,
+      gender: gender.value,
+      age: age.value,
+      aadhar: aadhar.value,
+      imageURL: imageURL.value,
+      address: address.value,
+      phone: phone.value,
+      SOS_phone: SOS_phone.value,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-export const getUserData = async userId => {
-	try {
-		const userRef = await firestore
-			.collection("users")
-			.doc(userId)
-			.get();
-		return userRef.data();
-	} catch (err) {
-		console.log(err);
-	}
+export const getUserData = async (userId) => {
+  try {
+    const userRef = await firestore.collection("users").doc(userId).get();
+    return userRef.data();
+  } catch (err) {
+    console.log(err);
+  }
 };

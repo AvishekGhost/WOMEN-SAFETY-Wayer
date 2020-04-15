@@ -11,16 +11,16 @@ import { Switch, Route } from "react-router-dom";
 import PrivateRoute from "./hoc/PrivateRoute";
 
 function App() {
-	return (
-		<div className="App">
-			<TopBar />
-			<Switch>
-				<Route path="/" exact component={Home} />
-				<PrivateRoute path="/maps" exact component={Maps} />
-				<PrivateRoute path="/profile" exact component={Profile} />
-			</Switch>
-		</div>
-	);
+  return (
+    <div className="App">
+      <TopBar />
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <PrivateRoute path="/maps" exact component={Maps} />
+        <PrivateRoute path="/profile" exact component={Profile} />
+      </Switch>
+    </div>
+  );
 }
 
 export default App;
