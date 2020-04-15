@@ -4,9 +4,12 @@ import { withRouter } from "react-router-dom";
 import firebase from "../../../FirebaseConfig";
 import { writeUserData } from "../../../utility";
 
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
 import Spinner from "react-bootstrap/Spinner";
 import classes from "./Register.module.css";
