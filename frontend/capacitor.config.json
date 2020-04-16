@@ -1,6 +1,6 @@
 {
 	"appId": "io.ionic.starter",
-	"appName": "Reacr Ionic",
+	"appName": "Wayfer",
 	"bundledWebRuntime": false,
 	"npmClient": "npm",
 	"webDir": "build",

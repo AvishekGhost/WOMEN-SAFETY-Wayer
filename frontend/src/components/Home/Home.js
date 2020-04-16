@@ -7,26 +7,26 @@ import Register from "../Auth/Register/Register";
 import Forum from "../Forum/Forum";
 
 const Home = (props) => {
-  const { currentUser } = useContext(AuthContext);
-  const [formDisplay, setFormDisplay] = useState("login");
+	const { currentUser } = useContext(AuthContext);
+	const [formDisplay, setFormDisplay] = useState("login");
 
-  return (
-    <>
-      {currentUser ? (
-        <>
-          <Forum />
-        </>
-      ) : (
-        <>
-          {formDisplay === "login" ? (
-            <Login setFormDisplay={setFormDisplay} />
-          ) : (
-            <Register setFormDisplay={setFormDisplay} />
-          )}
-        </>
-      )}
-    </>
-  );
+	return (
+		<>
+			{currentUser ? (
+				<>
+					<Forum />
+				</>
+			) : (
+				<>
+					{formDisplay === "login" ? (
+						<Login setFormDisplay={setFormDisplay} />
+					) : (
+						<Register setFormDisplay={setFormDisplay} />
+					)}
+				</>
+			)}
+		</>
+	);
 };
 
 export default Home;

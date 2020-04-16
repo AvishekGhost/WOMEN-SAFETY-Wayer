@@ -13,7 +13,7 @@ import {
 	IonInput,
 	IonItem,
 	IonText,
-	IonButton
+	IonButton,
 } from "@ionic/react";
 
 const Forum = () => {
@@ -25,7 +25,7 @@ const Forum = () => {
 	const [msg, setmsg] = useState("");
 	const [messeges, setmesseges] = useState([]);
 	const [currentNode, setCurrentNode] = useState(Nodes[0]);
-	const [currentLocation, setCurrentLocation] = useState();
+	//const [currentLocation, setCurrentLocation] = useState();
 
 	const handleSubmit = () => {
 		setBusy(true);
@@ -54,17 +54,14 @@ const Forum = () => {
 		);
 	};
 
-	const writeMessageToDB = message => {
+	const writeMessageToDB = (message) => {
 		if (currentNode.trim() !== "") {
-			firebase
-				.database()
-				.ref(`messages/${currentNode}`)
-				.push({
-					text: message,
-					name: "Current User",
-					email: currentUser.email,
-					time: getCurrentTimeDate()
-				});
+			firebase.database().ref(`messages/${currentNode}`).push({
+				text: message,
+				name: "Current User",
+				email: currentUser.email,
+				time: getCurrentTimeDate(),
+			});
 		} else {
 			alert("assigning you a node");
 		}
@@ -75,9 +72,9 @@ const Forum = () => {
 		if (currentNode.trim() !== "") {
 			let messegeDB = firebase.database().ref(`messages/${currentNode}`);
 
-			messegeDB.on("value", snapshot => {
+			messegeDB.on("value", (snapshot) => {
 				let newMesseges = [];
-				snapshot.forEach(child => {
+				snapshot.forEach((child) => {
 					let messege = child.val();
 
 					newMesseges.push({
@@ -85,7 +82,7 @@ const Forum = () => {
 						text: messege.text,
 						name: messege.name,
 						email: messege.email,
-						time: messege.time
+						time: messege.time,
 					});
 				});
 
@@ -137,7 +134,7 @@ const Forum = () => {
 			<IonItem>
 				<IonInput
 					value={msg}
-					onIonChange={event => setmsg(event.target.value)}
+					onIonChange={(event) => setmsg(event.target.value)}
 					type="text"
 					placeholder="Type a messege"
 				/>
@@ -146,7 +143,7 @@ const Forum = () => {
 			<IonItem>
 				<IonText> current Node: {currentNode}</IonText>
 			</IonItem>
-
+			{console.log(changeNode)}
 			{/* <IonButton onClick={changeNode}>change Node</IonButton> */}
 		</>
 	);

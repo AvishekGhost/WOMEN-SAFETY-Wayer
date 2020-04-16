@@ -1,6 +1,6 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import { toast } from "../Toast/Toast";
-import { IonInput, IonButton, IonItem, IonLabel, IonText } from "@ionic/react";
+import { IonInput, IonButton, IonItem, IonLabel } from "@ionic/react";
 
 import Red from "./Red.svg";
 import Blue from "./Blue.svg";
@@ -15,11 +15,20 @@ import "./DisplayMapFC.css";
 export const DisplayMapFC = ({ currentLocation }) => {
 	const mapRef = React.useRef(null);
 	const [hMapRef, sethMapRef] = useState(null);
+
+	const [avoidCords, setAvoidCords] = useState([]);
 	const [destinationCords, setDestinationCords] = useState({
 		lat: 22.61182,
 		lon: 88.37477,
 	});
-	const [avoidCords, setAvoidCords] = useState([]);
+
+	useEffect(() => {
+		let newCoords = {
+			lat: 22.61182,
+			lon: 88.37477,
+		};
+		setDestinationCords(newCoords);
+	}, []);
 
 	React.useLayoutEffect(() => {
 		if (!mapRef.current) return;
@@ -138,7 +147,7 @@ export const DisplayMapFC = ({ currentLocation }) => {
 			<div>
 				<p className="form-input-title">Enter Destination</p>
 				<div className="form-input-container">
-					<div>
+					<div className="form-input">
 						<IonItem>
 							<IonLabel>Latitude: </IonLabel>
 							<IonInput val={la} />
