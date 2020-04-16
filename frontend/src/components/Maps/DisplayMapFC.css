@@ -1,0 +1,40 @@
+.marker-info-container {
+	display: flex;
+	justify-content: space-around;
+	margin: 1vw;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.marker-info-container_IonItem {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	margin: 1vw;
+}
+
+.marker-info-container_IonItem img {
+	height: 50px;
+	width: 50px;
+}
+
+.map-container {
+	height: 65vh;
+}
+
+.form-button-container {
+	display: flex;
+	justify-content: space-around;
+	flex-direction: column;
+}
+
+.form-input-container {
+	display: flex;
+	justify-content: space-around;
+}
+.form-input-title {
+	font-size: large;
+	margin: 10px;
+}
