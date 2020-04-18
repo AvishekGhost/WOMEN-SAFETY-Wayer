@@ -1,12 +1,17 @@
-.forum-container {
-  display: flex;
-  flex-direction: column;
+.forum-footer-style {
+	font-size: 10px;
+	color: white;
+	border-top: 1px solid #e7e7e7;
+	text-align: center;
+	position: fixed;
+	left: 0;
+	bottom: 0px;
+	height: 50px;
+	width: 100%;
 }
 
-.message-view-container {
-  width: 100%;
-}
-
-.message-send-container {
-  display: flex;
+.forum-phantom-div-style {
+	display: block;
+	height: 50px;
+	width: 100%;
 }

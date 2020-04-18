@@ -1,16 +1,14 @@
 .other-card-container {
-  max-width: 60vw;
-  background-color: #dbdbdb;
-  display: flex;
-  margin: 10px;
-  margin-top: 15px;
-  border-radius: 15px 15px 15px 0px;
+	max-width: 60vw;
+	background-color: #dbdbdb;
+	display: flex;
+	margin: 10px;
+	margin-top: 15px;
+	border-radius: 15px 15px 15px 0px;
 }
 
-.other-card-container h5,
-h6,
-p {
-  font-size: larger;
-  max-width: 25vw;
-  word-wrap: break-word;
+.other-card-container p {
+	font-size: larger;
+	max-width: 25vw;
+	word-wrap: break-word;
 }
