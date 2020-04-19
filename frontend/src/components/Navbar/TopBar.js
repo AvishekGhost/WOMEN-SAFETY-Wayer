@@ -7,10 +7,10 @@ import { AuthContext } from "../../context/authContext";
 import { Link, withRouter } from "react-router-dom";
 import classes from "./TopBar.module.css";
 
-import { home, map, personOutline } from "ionicons/icons";
+import { home, map, personSharp } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 
-const TopBar = props => {
+const TopBar = (props) => {
 	const { currentUser } = useContext(AuthContext);
 
 	return (
@@ -34,7 +34,7 @@ const TopBar = props => {
 					<Nav>
 						<Nav.Link>
 							<Link to="/profile">
-								<IonIcon src={personOutline} />
+								<IonIcon src={personSharp} />
 							</Link>
 						</Nav.Link>
 					</Nav>

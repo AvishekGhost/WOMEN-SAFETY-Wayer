@@ -8,16 +8,7 @@ import { toast } from "../Toast/Toast";
 import BottomBar from "./BottomBar/BottomBar";
 import Messeges from "./Messeges/Messeges";
 
-import {
-	IonLoading,
-	IonList,
-	IonInput,
-	IonButton,
-	IonItem,
-	IonApp,
-} from "@ionic/react";
-
-import "./Forum.css";
+import { IonLoading, IonInput, IonButton, IonItem, IonApp } from "@ionic/react";
 
 const Forum = () => {
 	const [busy, setBusy] = useState(true);

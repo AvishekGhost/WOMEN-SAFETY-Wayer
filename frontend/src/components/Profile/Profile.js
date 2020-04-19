@@ -57,7 +57,7 @@ const Profile = (props) => {
 			{isDataReadyForUse() && (
 				<>
 					<ListGroupItem>
-						<img height="80vh" src={showUser.imageURL} alt="Loading"></img>
+						<img height="200px" src={showUser.imageURL} alt="Loading"></img>
 					</ListGroupItem>
 					<ListGroupItem>
 						<FormLabel>Name</FormLabel>

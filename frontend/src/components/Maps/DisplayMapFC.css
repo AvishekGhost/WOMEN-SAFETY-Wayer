@@ -21,7 +21,8 @@
 }
 
 .map-container {
-	height: 65vh;
+	height: calc(100vh - 200px);
+	overflow: hidden;
 }
 
 .form-button-container {
@@ -40,4 +41,24 @@
 .form-input-title {
 	font-size: large;
 	margin: 10px;
+}
+
+.bottom-bar-buttons-container {
+	height: 50px;
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	padding: 5px;
+}
+
+.bottom-bar-marker-info-ion-icon {
+	width: 33%;
+	font-size: 0.6rem;
+	display: flex;
+}
+
+.bottom-bar-marker-info-container {
+	height: 50px;
+	width: 100%;
+	display: flex;
 }

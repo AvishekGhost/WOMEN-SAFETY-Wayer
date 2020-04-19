@@ -1,6 +1,14 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { toast } from "../Toast/Toast";
-import { IonInput, IonButton, IonItem, IonLabel } from "@ionic/react";
+import {
+	IonInput,
+	IonButton,
+	IonItem,
+	IonLabel,
+	IonLoading,
+} from "@ionic/react";
+
+import BottomBar from "./BottomBar/BottomBar";
 
 import Red from "./Red.svg";
 import Blue from "./Blue.svg";
@@ -12,9 +20,17 @@ import someShit from "./object.json";
 
 import "./DisplayMapFC.css";
 
+const H = window.H;
+const platform = new H.service.Platform({
+	apikey: "GNlK1kK3P7tTxS5vrdpv4QcgVHRjxQ-DJarCupZQms0",
+});
+
 export const DisplayMapFC = ({ currentLocation }) => {
+	const [busy, setBusy] = useState(true);
 	const mapRef = React.useRef(null);
 	const [hMapRef, sethMapRef] = useState(null);
+
+	const [destinationAddress, setDestinationAddress] = useState("");
 
 	const [avoidCords, setAvoidCords] = useState([]);
 	const [destinationCords, setDestinationCords] = useState({
@@ -30,13 +46,52 @@ export const DisplayMapFC = ({ currentLocation }) => {
 		setDestinationCords(newCoords);
 	}, []);
 
+	useEffect(() => {
+		const geocode = (platform) => {
+			if (destinationAddress.trim() === "") return;
+			var geocoder = platform.getGeocodingService(),
+				geocodingParameters = {
+					searchText: destinationAddress,
+					jsonattributes: 1,
+				};
+
+			geocoder.geocode(
+				geocodingParameters,
+				(result) => {
+					let locations = result.response.view[0].result;
+
+					let position = {
+						lat: locations[0].location.displayPosition.latitude,
+						lng: locations[0].location.displayPosition.longitude,
+					};
+
+					console.log("res", position);
+
+					const donorLocation = new window.H.map.Marker({
+						lat: position.lat,
+						lng: position.lng,
+					});
+					hMapRef.addObject(donorLocation);
+				},
+				(err) => {
+					alert("Can't reach the remote server");
+				}
+			);
+		};
+		geocode(
+			new H.service.Platform({
+				apikey: "GNlK1kK3P7tTxS5vrdpv4QcgVHRjxQ-DJarCupZQms0",
+			})
+		);
+	}, [destinationAddress]);
+
 	React.useLayoutEffect(() => {
 		if (!mapRef.current) return;
 		if (!currentLocation) return;
-		const H = window.H;
-		const platform = new H.service.Platform({
-			apikey: "GNlK1kK3P7tTxS5vrdpv4QcgVHRjxQ-DJarCupZQms0",
-		});
+
+		// const platform = new H.service.Platform({
+		// 	apikey: "GNlK1kK3P7tTxS5vrdpv4QcgVHRjxQ-DJarCupZQms0",
+		// });
 		const defaultLayers = platform.createDefaultLayers();
 		const hMap = new H.Map(mapRef.current, defaultLayers.vector.normal.map, {
 			center: { lat: currentLocation.lat, lng: currentLocation.lon },
@@ -103,6 +158,8 @@ export const DisplayMapFC = ({ currentLocation }) => {
 		);
 		hMap.addObject(donorLocation1);
 
+		setBusy(false);
+
 		return () => {
 			hMap.dispose();
 		};
@@ -138,23 +195,63 @@ export const DisplayMapFC = ({ currentLocation }) => {
 		toast("Noob", 4000);
 	};
 
-	const la = 52.51733824;
-	const lo = 13.394678415;
-
 	return (
 		<Fragment>
+			<IonLoading message="Please wait" duration={0} isOpen={busy} />
 			<div className="map" ref={mapRef} className="map-container" />
+			<BottomBar>
+				<div className="bottom-bar-marker-info-container">
+					<IonItem className="bottom-bar-marker-info-ion-icon">
+						<IonLabel>Your Location</IonLabel>
+						<img src={Blue} height="45px" width="45px" alt="" />
+					</IonItem>
+					<IonItem className="bottom-bar-marker-info-ion-icon">
+						<IonLabel>Destination</IonLabel>
+						<img src={Green} height="50px" width="50px" alt="" />
+					</IonItem>
+					<IonItem className="bottom-bar-marker-info-ion-icon">
+						<IonLabel>Unsafe Location</IonLabel>
+						<img src={Red} height="50px" width="50px" alt="" />
+					</IonItem>
+				</div>
+				<IonItem>
+					<IonInput
+						value={destinationAddress}
+						type="text"
+						placeholder="Enter Destination"
+						onIonChange={(e) => {
+							setDestinationAddress(e.target.value);
+						}}
+					/>
+					<IonButton>Find</IonButton>
+				</IonItem>
+				<IonItem>
+					<div className="bottom-bar-buttons-container">
+						<IonButton>My Location</IonButton>
+						<IonButton>Show Route</IonButton>
+						<IonButton>Clear</IonButton>
+					</div>
+				</IonItem>
+			</BottomBar>
+		</Fragment>
+	);
+};
+
+{
+	/* <div className="map" ref={mapRef} className="map-container" />
 			<div>
 				<p className="form-input-title">Enter Destination</p>
 				<div className="form-input-container">
 					<div className="form-input">
 						<IonItem>
-							<IonLabel>Latitude: </IonLabel>
-							<IonInput val={la} />
-						</IonItem>
-						<IonItem>
-							<IonLabel>Longitude: </IonLabel>
-							<IonInput val={lo} />
+							<IonLabel>Address: </IonLabel>
+							<IonInput
+								value={destinationAddress}
+								type="text"
+								onIonChange={(e) => {
+									setDestinationAddress(e.target.value);
+								}}
+							/>
 						</IonItem>
 					</div>
 					<div className="form-button-container">
@@ -176,7 +273,5 @@ export const DisplayMapFC = ({ currentLocation }) => {
 					<IonLabel>Unsafe Location</IonLabel>
 					<img src={Red} height="50px" width="50px" alt="" />
 				</div>
-			</div>
-		</Fragment>
-	);
-};
+			</div> */
+}

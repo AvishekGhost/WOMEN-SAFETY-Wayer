@@ -3,7 +3,7 @@ import React from "react";
 const BottomBar = ({ children }) => {
 	const phantomDivStyle = {
 		display: "block",
-		height: "50px",
+		height: "150px",
 		width: "100%",
 	};
 
@@ -15,7 +15,7 @@ const BottomBar = ({ children }) => {
 		position: "fixed",
 		left: 0,
 		bottom: "0px",
-		height: "50px",
+		height: "150px",
 		width: "100%",
 	};
 
