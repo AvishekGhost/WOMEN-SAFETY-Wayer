@@ -1,7 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { FormLabel, ListGroupItem, Card } from "react-bootstrap";
-import { IonButton, IonLoading } from "@ionic/react";
+import {
+	IonButton,
+	IonLoading,
+	IonApp,
+	IonItem,
+	IonLabel,
+	IonText,
+	IonContent,
+} from "@ionic/react";
 
 import { firestore } from "../../FirebaseConfig";
 import { AuthContext } from "../../context/authContext";
@@ -52,33 +59,43 @@ const Profile = (props) => {
 	};
 
 	return (
-		<>
+		<IonApp style={{ marginTop: "50px" }}>
 			<IonLoading message="Please wait" duration={0} isOpen={busy} />
 			{isDataReadyForUse() && (
-				<>
-					<ListGroupItem>
-						<img height="200px" src={showUser.imageURL} alt="Loading"></img>
-					</ListGroupItem>
-					<ListGroupItem>
-						<FormLabel>Name</FormLabel>
-						<Card.Text>{showUser.name}</Card.Text>
-					</ListGroupItem>
-					<ListGroupItem>
-						<FormLabel>Gender</FormLabel>
-						<Card.Text>{showUser.gender}</Card.Text>
-					</ListGroupItem>
-					<ListGroupItem>
-						<FormLabel>Age</FormLabel>
-						<Card.Text>{showUser.age}</Card.Text>
-					</ListGroupItem>
-					<ListGroupItem>
-						<FormLabel>Phone</FormLabel>
-						<Card.Text>{showUser.phone}</Card.Text>
-					</ListGroupItem>
+				<IonContent>
+					<IonItem>
+						<img
+							style={{
+								display: "block",
+								marginLeft: "auto",
+								marginRight: "auto",
+								height: "30vh",
+							}}
+							src={showUser.imageURL}
+							alt="loading"
+						/>
+					</IonItem>
+					<IonItem>
+						<IonLabel>Name</IonLabel>
+						<IonText>{showUser.name}</IonText>
+					</IonItem>
+					<IonItem>
+						<IonLabel>Gender</IonLabel>
+						<IonText>{showUser.gender}</IonText>
+					</IonItem>
+					<IonItem>
+						<IonLabel>
+							Age <IonText>{showUser.age}</IonText>
+						</IonLabel>
+					</IonItem>
+					<IonItem>
+						<IonLabel>Phone</IonLabel>
+						<IonText>{showUser.phone}</IonText>
+					</IonItem>
 					<IonButton onClick={signOut}>Logout</IonButton>
-				</>
+				</IonContent>
 			)}
-		</>
+		</IonApp>
 	);
 };
 

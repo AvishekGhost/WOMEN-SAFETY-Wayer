@@ -1,9 +1,7 @@
 {
-  "name": "Reacr Ionic",
-  "type": "custom",
-  "bundleWebRuntime": false,
-  "webDie": "public",
+  "name": "wayfer",
   "integrations": {
     "capacitor": {}
-  }
+  },
+  "type": "react"
 }

@@ -1,41 +1,56 @@
 import React, { useState, useEffect } from "react";
 import { DisplayMapFC } from "./DisplayMapFC";
-import { IonLoading } from "@ionic/react";
+import { IonLoading, IonApp } from "@ionic/react";
 import { Plugins } from "@capacitor/core";
 
-const Maps = () => {
-	const [currentLocation, setCurrentLocation] = useState({ lat: 0, lon: 0 });
-	const [busy, setBusy] = useState(false);
+const { Geolocation } = Plugins;
 
-	const { Geolocation } = Plugins;
+const Maps = () => {
+	const [currentLocation, setCurrentLocation] = useState(null);
+	const [busy, setBusy] = useState(false);
 
 	useEffect(() => {
 		setBusy(true);
 		Geolocation.getCurrentPosition()
-			.then(resp => {
+			.then((resp) => {
 				let temp = {
 					lat: resp.coords.latitude,
-					lon: resp.coords.longitude
+					lng: resp.coords.longitude,
 				};
 				setCurrentLocation(temp);
 			})
-			.catch(error => {
+			.catch((error) => {
 				console.log(error);
 			});
 
-		Geolocation.watchPosition({}, (position, err) => {
-			if (!err) {
-				console.log(position.coords);
-			}
-		});
+		// Geolocation.watchPosition({}, (resp, err) => {
+		// 	if (!currentLocation && !err) {
+		// 		let temp = {
+		// 			lat: resp.coords.latitude,
+		// 			lng: resp.coords.longitude,
+		// 		};
+		// 		setCurrentLocation(temp);
+		// 	} else if (
+		// 		!err &&
+		// 		currentLocation &&
+		// 		(currentLocation.lat !== resp.coords.latitude ||
+		// 			currentLocation.lng !== resp.coords.longitude)
+		// 	) {
+		// 		let temp = {
+		// 			lat: resp.coords.latitude,
+		// 			lng: resp.coords.longitude,
+		// 		};
+		// 		setCurrentLocation(temp);
+		// 	}
+		// });
 		setBusy(false);
-	}, [Geolocation]);
+	}, []);
 
 	return (
-		<>
+		<IonApp>
 			<IonLoading message="Please wait" duration={0} isOpen={busy}></IonLoading>
 			<DisplayMapFC currentLocation={currentLocation} />
-		</>
+		</IonApp>
 	);
 };
 

@@ -8,7 +8,14 @@ import { toast } from "../Toast/Toast";
 import BottomBar from "./BottomBar/BottomBar";
 import Messeges from "./Messeges/Messeges";
 
-import { IonLoading, IonInput, IonButton, IonItem, IonApp } from "@ionic/react";
+import {
+	IonLoading,
+	IonInput,
+	IonButton,
+	IonItem,
+	IonApp,
+	IonContent,
+} from "@ionic/react";
 
 const Forum = () => {
 	const [busy, setBusy] = useState(true);
@@ -117,19 +124,21 @@ const Forum = () => {
 
 	return (
 		<IonApp>
-			<IonLoading message="Please wait" duration={0} isOpen={busy} />
-			<Messeges messeges={messeges} currentUser={currentUser} />
-			<BottomBar>
-				<IonItem className="message-send-container">
-					<IonInput
-						value={msg}
-						onIonChange={(event) => setmsg(event.target.value)}
-						pattern="text"
-						placeholder="Type a messege"
-					/>
-					<IonButton onClick={handleSubmit}>Send</IonButton>
-				</IonItem>
-			</BottomBar>
+			<IonContent>
+				<IonLoading message="Please wait" duration={0} isOpen={busy} />
+				<Messeges messeges={messeges} currentUser={currentUser} />
+				<BottomBar>
+					<IonItem>
+						<IonInput
+							value={msg}
+							onIonChange={(event) => setmsg(event.target.value)}
+							pattern="text"
+							placeholder="Type a messege"
+						/>
+						<IonButton onClick={handleSubmit}>Send</IonButton>
+					</IonItem>
+				</BottomBar>
+			</IonContent>
 		</IonApp>
 	);
 };

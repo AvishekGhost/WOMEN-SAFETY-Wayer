@@ -23,7 +23,7 @@ const Messeges = ({ messeges, currentUser }) => {
 	};
 
 	return (
-		<IonList>
+		<IonList style={{ overflow: "auto", marginTop: "50px" }}>
 			{messeges.map((message, id) => (
 				<div key={id}>
 					{returnMsgComponent(
