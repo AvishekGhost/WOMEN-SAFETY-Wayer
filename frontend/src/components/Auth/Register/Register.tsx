@@ -21,12 +21,12 @@ import {
 	IonLoading,
 } from "@ionic/react";
 
-const Signup = (props) => {
+const Signup: React.FC<any> = (props) => {
 	const { history, setFormDisplay } = props;
-	const [hiddenPassword, setHiddenPassword] = useState(true);
-	const [formError, setFormError] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState(null);
+	const [hiddenPassword, setHiddenPassword] = useState<boolean>(true);
+	const [formError, setFormError] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [error, setError] = useState<any>(null);
 
 	const handleSignUp = useCallback(
 		async (
@@ -42,7 +42,7 @@ const Signup = (props) => {
 			SOS_phone
 		) => {
 			try {
-				const userCredentials = await firebase
+				const userCredentials: any = await firebase
 					.auth()
 					.createUserWithEmailAndPassword(email, password);
 

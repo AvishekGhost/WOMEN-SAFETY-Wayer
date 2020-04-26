@@ -1,13 +1,14 @@
 import React from "react";
+import CSS from 'csstype';
 
-const BottomBar = ({ children }) => {
-	const phantomDivStyle = {
+const BottomBar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+	const phantomDivStyle: CSS.Properties = {
 		display: "block",
 		height: "50px",
 		width: "100%",
 	};
 
-	const footerStyle = {
+	const footerStyle: CSS.Properties = {
 		fontSize: "10px",
 		color: "white",
 		borderTop: "1px solid #e7e7e7",

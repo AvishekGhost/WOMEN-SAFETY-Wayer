@@ -16,11 +16,11 @@ import { handleLogout } from "../../utility";
 
 import { toast } from "../Toast/Toast";
 
-const Profile = (props) => {
-	const { currentUser } = useContext(AuthContext);
+const Profile: React.FC<any> = (props) => {
+	const { currentUser } = useContext<any>(AuthContext);
 	const { history } = props;
-	const [showUser, setShowUser] = useState(null);
-	const [isDataReady, setIsDataReady] = useState(false);
+	const [showUser, setShowUser] = useState<any>(null);
+	const [isDataReady, setIsDataReady] = useState<boolean>(false);
 	const [busy, setBusy] = useState(true);
 
 	useEffect(() => {
@@ -29,8 +29,8 @@ const Profile = (props) => {
 			.collection("users")
 			.doc(currentUser.uid)
 			.get()
-			.then((doc) => {
-				const newShowUser = {
+			.then((doc: any) => {
+				const newShowUser: any = {
 					imageURL: doc.data().imageURL,
 					name: doc.data().name,
 					phone: doc.data().phone,

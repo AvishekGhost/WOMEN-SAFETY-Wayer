@@ -1,12 +1,12 @@
 import React from "react";
 import { IonAvatar, IonCardSubtitle } from "@ionic/react";
 
-import "./OtherCard.css";
+import "./MyCard.css";
 
-const OtherCard = ({ name, text, time, imageURL }) => {
+const MyCard: React.FC<{ name: string, text: string, time: string, imageURL: string }> = ({ name, text, time, imageURL }) => {
 	return (
-		<div className="other-card-container">
-			<IonAvatar slot="start" style={{ padding: "10px" }}>
+		<div className="my-card-container">
+			<IonAvatar slot="end" style={{ padding: "10px" }}>
 				<img
 					style={{
 						height: "30px",
@@ -25,14 +25,14 @@ const OtherCard = ({ name, text, time, imageURL }) => {
 					padding: "5px",
 				}}
 			>
-				<IonCardSubtitle>{name}</IonCardSubtitle>
-				<p>{text}</p>
-				<p>
+				<IonCardSubtitle style={{ color: "#ececec" }}>{name}</IonCardSubtitle>
+				<p style={{ color: "white" }}>{text}</p>
+				<IonCardSubtitle >
 					<small>{time}</small>
-				</p>
+				</IonCardSubtitle>
 			</div>
 		</div>
 	);
 };
 
-export default OtherCard;
+export default MyCard;

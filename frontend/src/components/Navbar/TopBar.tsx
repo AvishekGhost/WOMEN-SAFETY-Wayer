@@ -10,8 +10,8 @@ import classes from "./TopBar.module.css";
 import { home, map, personSharp } from "ionicons/icons";
 import { IonIcon } from "@ionic/react";
 
-const TopBar = (props) => {
-	const { currentUser } = useContext(AuthContext);
+const TopBar: React.FC = () => {
+	const { currentUser } = useContext<any>(AuthContext);
 
 	return (
 		<Navbar bg="dark" variant="dark" expand="lg" sticky="top">

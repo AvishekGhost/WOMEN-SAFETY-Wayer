@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import firebase, { firestore } from "../../FirebaseConfig.js";
+import React, { useState, useEffect, useContext } from "react";
+import firebase, { firestore } from "../../FirebaseConfig";
 
 import { AuthContext } from "../../context/authContext";
 
@@ -17,13 +17,13 @@ import {
 	IonContent,
 } from "@ionic/react";
 
-const Forum = () => {
-	const [busy, setBusy] = useState(true);
+const Forum: React.FC = () => {
+	const [busy, setBusy] = useState<boolean>(true);
 
-	const { currentUser } = useContext(AuthContext);
+	const { currentUser } = useContext<any>(AuthContext);
 
 	const Nodes = ["node1", "node2", "node3"];
-	const [msg, setmsg] = useState("");
+	const [msg, setmsg] = useState<string>("");
 	const [messeges, setmesseges] = useState([]);
 	const [currentNode, setCurrentNode] = useState(Nodes[0]);
 
@@ -54,13 +54,13 @@ const Forum = () => {
 		);
 	};
 
-	const writeMessageToDB = (message) => {
+	const writeMessageToDB = (message: any) => {
 		if (currentNode.trim() !== "") {
 			firestore
 				.collection("users")
 				.doc(currentUser.uid)
 				.get()
-				.then((doc) => {
+				.then((doc: any) => {
 					firebase.database().ref(`messages/${currentNode}`).push({
 						userID: currentUser.uid,
 						text: message,
@@ -84,7 +84,7 @@ const Forum = () => {
 			let messegeDB = firebase.database().ref(`messages/${currentNode}`);
 
 			messegeDB.on("value", (snapshot) => {
-				let newMesseges = [];
+				let newMesseges: any = [];
 				snapshot.forEach((child) => {
 					let messege = child.val();
 
@@ -118,20 +118,23 @@ const Forum = () => {
 		setCurrentNode(temp);
 	};
 
-	useEffect(() => {
-		window.scrollTo(0, document.body.scrollHeight);
-	}, [messeges]);
+	const keyPressed = (event: any) => {
+		if (event.key === "Enter") {
+			handleSubmit();
+		}
+	};
 
 	return (
 		<IonApp>
-			<IonContent>
+			<IonContent class="scroll-content">
 				<IonLoading message="Please wait" duration={0} isOpen={busy} />
 				<Messeges messeges={messeges} currentUser={currentUser} />
 				<BottomBar>
 					<IonItem>
 						<IonInput
 							value={msg}
-							onIonChange={(event) => setmsg(event.target.value)}
+							onKeyPress={keyPressed}
+							onIonChange={(event: any) => setmsg(event.target.value)}
 							pattern="text"
 							placeholder="Type a messege"
 						/>

@@ -9,16 +9,16 @@ export const handleLogout = async () => {
 };
 
 export const writeUserData = async (
-	userId,
-	username,
-	email,
-	age,
-	gender,
-	imageURL = "",
-	address,
-	phone,
-	aadhar,
-	SOS_phone
+	userId: any,
+	username: any,
+	email: any,
+	age: any,
+	gender: any,
+	imageURL: any,
+	address: any,
+	phone: any,
+	aadhar: any,
+	SOS_phone: any
 ) => {
 	try {
 		console.log(username);
@@ -38,7 +38,7 @@ export const writeUserData = async (
 	}
 };
 
-export const getUserData = async (userId) => {
+export const getUserData = async (userId: any) => {
 	try {
 		const userRef = await firestore.collection("users").doc(userId).get();
 

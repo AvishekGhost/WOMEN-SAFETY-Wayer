@@ -17,19 +17,19 @@ import firebase from "../../../FirebaseConfig";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 
-const isValid = (email, passwd) => {
+const isValid = (email: any, passwd: any) => {
 	const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
 	const validEmail = emailRegex.test(email);
 	const validPasswd = passwd.length >= 6;
 	return validEmail && validPasswd;
 };
 
-const Login = (props) => {
+const Login: React.FC<any> = (props) => {
 	const { history, setFormDisplay } = props;
-	const [hiddenPassword, setHiddenPassword] = useState(true);
-	const [formError, setFormError] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState(null);
+	const [hiddenPassword, setHiddenPassword] = useState<boolean>(true);
+	const [formError, setFormError] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [error, setError] = useState<any>(null);
 
 	const handleSignIn = useCallback(
 		async (email, password) => {
@@ -101,7 +101,7 @@ const Login = (props) => {
 							></IonCheckbox>
 							<IonLabel>Show Password</IonLabel>
 						</IonItem>
-						<IonButton variant="primary" type="submit">
+						<IonButton color="primary" type="submit">
 							Login
 						</IonButton>
 						<IonButton

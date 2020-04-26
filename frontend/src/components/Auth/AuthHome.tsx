@@ -3,7 +3,7 @@ import React from "react";
 
 import { Link } from "react-router-dom";
 
-const AuthHome = () => {
+const AuthHome: React.FC = () => {
 	return (
 		<>
 			<IonText className="ion-padding">Home Page</IonText>

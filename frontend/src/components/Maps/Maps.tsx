@@ -5,15 +5,15 @@ import { Plugins } from "@capacitor/core";
 
 const { Geolocation } = Plugins;
 
-const Maps = () => {
-	const [currentLocation, setCurrentLocation] = useState(null);
-	const [busy, setBusy] = useState(false);
+const Maps: React.FC = () => {
+	const [currentLocation, setCurrentLocation] = useState<any>(null);
+	const [busy, setBusy] = useState<boolean>(false);
 
 	useEffect(() => {
 		setBusy(true);
 		Geolocation.getCurrentPosition()
 			.then((resp) => {
-				let temp = {
+				let temp: any = {
 					lat: resp.coords.latitude,
 					lng: resp.coords.longitude,
 				};
