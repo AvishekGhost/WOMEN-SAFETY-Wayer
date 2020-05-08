@@ -5,7 +5,7 @@ import "./MyCard.css";
 
 const MyCard: React.FC<{ name: string, text: string, time: string, imageURL: string }> = ({ name, text, time, imageURL }) => {
 	return (
-		<div className="my-card-container">
+		<div className="my-card-container" style={{ width: "60vw" }}>
 			<IonAvatar slot="end" style={{ padding: "10px" }}>
 				<img
 					style={{

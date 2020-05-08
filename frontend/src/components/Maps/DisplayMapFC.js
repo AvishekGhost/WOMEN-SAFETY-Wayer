@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "../Toast/Toast";
 
+import JSZip from "jszip";
+import Axios from "axios";
+
 import {
 	IonInput,
 	IonButton,
@@ -16,7 +19,6 @@ import Blue from "../../assets/Blue.svg";
 import Green from "../../assets/Green.svg";
 
 import cords from "./cord.json";
-import someShit from "./object.json";
 
 import "./DisplayMapFC.css";
 
@@ -164,6 +166,29 @@ export const DisplayMapFC = ({ currentLocation }) => {
 		setCurrentLocationMarkerOnMap(16);
 	};
 
+	const getAvoidCoordinates = () => {
+		let disDiff = Math.sqrt(
+			Math.pow(destinationCords.lat - currentLocation.lat, 2) +
+				Math.pow(destinationCords.lng - currentLocation.lng, 2)
+		);
+
+		let midpointX = (currentLocation.lat + destinationCords.lat) / 2;
+		let midpointY = (currentLocation.lng + destinationCords.lng) / 2;
+
+		const circle = new H.map.Circle(
+			{ lat: midpointX, lng: midpointY },
+			disDiff * 100000,
+			{
+				style: {
+					strokeColor: "rgba(55, 85, 170, 0.6)",
+					lineWidth: 2,
+					fillColor: "rgba(0, 128, 0, 0.7)",
+				},
+			}
+		);
+		hMapRef.addObject(circle);
+	};
+
 	const handleShowRoute = () => {
 		setBusy(true);
 
@@ -221,6 +246,8 @@ export const DisplayMapFC = ({ currentLocation }) => {
 		hMapRef.getViewModel().setLookAtData({
 			bounds: group.getBoundingBox(),
 		});
+
+		getAvoidCoordinates();
 	};
 
 	const handdleClear = () => {

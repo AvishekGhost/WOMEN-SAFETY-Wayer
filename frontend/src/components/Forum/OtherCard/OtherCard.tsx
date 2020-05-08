@@ -5,7 +5,7 @@ import "./OtherCard.css";
 
 const OtherCard: React.FC<{ name: string, text: string, time: string, imageURL: string }> = ({ name, text, time, imageURL }) => {
 	return (
-		<div className="other-card-container">
+		<div className="other-card-container" style={{ width: "60vw" }}>
 			<IonAvatar slot="start" style={{ padding: "10px" }}>
 				<img
 					style={{

@@ -18,14 +18,17 @@ const Messeges: React.FC<{ messeges: any, currentUser: any }> = ({ messeges, cur
 	const returnMsgComponent = (text: string, name: string, email: string, time: string, imageURL: string) => {
 		if (email === currentUser.email) {
 			return (
-				<div align={"right"}>
+				<div style={{ display: "flex" }}>
+					<div style={{ flex: 1, width: "40vw" }}></div>
 					<MyCard name={name} text={text} time={time} imageURL={imageURL} />
 				</div>
 			);
 		} else {
 			return (
-				<div align="left">
+				<div style={{ display: "flex" }}>
+
 					<OtherCard name={name} text={text} time={time} imageURL={imageURL} />
+					<div style={{ flex: 1, width: "40vw" }}></div>
 				</div>
 			);
 		}
