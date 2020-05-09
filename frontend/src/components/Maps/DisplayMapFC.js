@@ -1,5 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import { toast } from "../Toast/Toast";
+
+import classes from "../PanicButton/PanicButton.module.css";
+import SOSIcon from "../../assets/SOSIcon.svg";
+
+import { firestore } from "../../FirebaseConfig";
+import { AuthContext } from "../../context/authContext";
+import { handleLogout } from "../../utility";
+
+import { SMS as sms } from "@ionic-native/sms";
 
 import {
 	IonInput,
@@ -9,6 +18,8 @@ import {
 	IonLoading,
 	IonApp,
 	IonContent,
+	IonFab,
+	IonIcon,
 } from "@ionic/react";
 
 import Red from "../../assets/Red.svg";
@@ -20,9 +31,10 @@ import cords from "./cord.json";
 import "./DisplayMapFC.css";
 
 export const DisplayMapFC = ({ currentLocation }) => {
+	const { currentUser } = useContext(AuthContext);
 	const H = window.H;
 	const platform = new H.service.Platform({
-		apikey: "GNlK1kK3P7tTxS5vrdpv4QcgVHRjxQ-DJarCupZQms0",
+		apikey: "EufZOdnJDhlSV9-Cbp19GQfdgEklWjADwlees-i_xO0",
 	});
 
 	const [busy, setBusy] = useState(true);
@@ -39,6 +51,18 @@ export const DisplayMapFC = ({ currentLocation }) => {
 	const userMarker = new H.map.Icon(Blue);
 	const destinationMarker = new H.map.Icon(Green);
 	const avoidLocationMarker = new H.map.Icon(Red);
+
+	useEffect(() => {
+		let newAvoid = [];
+		for (let i in cords) {
+			newAvoid.push({
+				lat: cords[i].lat,
+				lng: cords[i].lng,
+			});
+		}
+
+		setAvoidCords(newAvoid);
+	}, []);
 
 	const geocode = () => {
 		if (destinationAddress.trim() === "") return;
@@ -58,6 +82,7 @@ export const DisplayMapFC = ({ currentLocation }) => {
 						lat: locations[0].location.displayPosition.latitude,
 						lng: locations[0].location.displayPosition.longitude,
 					};
+
 					setDestinationCords(position);
 				},
 				(err) => {
@@ -160,44 +185,154 @@ export const DisplayMapFC = ({ currentLocation }) => {
 
 	const handleMyLocation = () => {
 		setIsMyLocationBtnnPressed(true);
+
 		setCurrentLocationMarkerOnMap(16);
 	};
 
-	const getAvoidCoordinates = () => {
-		let disDiff = Math.sqrt(
-			Math.pow(destinationCords.lat - currentLocation.lat, 2) +
-				Math.pow(destinationCords.lng - currentLocation.lng, 2)
+	// const getAvoidCoordinates = () => {
+	// 	if (avoidCords.length > 1) {
+	// 	}
+
+	// 	const circle = new H.map.Circle(
+	// 		{ lat: midpointX, lng: midpointY },
+	// 		radius,
+	// 		{
+	// 			style: {
+	// 				strokeColor: "rgba(55, 85, 170, 0.6)",
+	// 				lineWidth: 2,
+	// 				fillColor: "rgba(0, 128, 0, 0.7)",
+	// 			},
+	// 		}
+	// 	);
+	// 	hMapRef.addObject(circle);
+	// };
+
+	const handlePanic = () => {
+		console.log("panic");
+
+		let lineString1 = new H.geo.LineString();
+		lineString1.pushPoint({
+			lat: currentLocation.lat,
+			lng: currentLocation.lng,
+		});
+		lineString1.pushPoint({
+			lat: currentLocation.lat + 0.15,
+			lng: currentLocation.lng + 0.15,
+		});
+
+		var userCurrentLocation1 = new H.map.Marker(
+			{ lat: currentLocation.lat + 0.15, lng: currentLocation.lng + 0.15 },
+			{ icon: userMarker }
+		)
+		var userCurrentLocation2 = new H.map.Marker(
+			{ lat: currentLocation.lat - 0.15, lng: currentLocation.lng - 0.15 },
+			{ icon: userMarker }
+		
+		)
+
+		hMapRef.addObject(userCurrentLocation1);
+		hMapRef.addObject(userCurrentLocation2);
+
+		hMapRef.addObject(
+			new H.map.Polyline(lineString1, {
+				style: { lineWidth: 4, strokeColor: "yellow" },
+			})
 		);
 
-		let midpointX = (currentLocation.lat + destinationCords.lat) / 2;
-		let midpointY = (currentLocation.lng + destinationCords.lng) / 2;
 
-		const circle = new H.map.Circle(
-			{ lat: midpointX, lng: midpointY },
-			disDiff * 100000,
-			{
-				style: {
-					strokeColor: "rgba(55, 85, 170, 0.6)",
-					lineWidth: 2,
-					fillColor: "rgba(0, 128, 0, 0.7)",
-				},
-			}
+		let lineString2 = new H.geo.LineString();
+		lineString2.pushPoint({
+			lat: currentLocation.lat,
+			lng: currentLocation.lng,
+		});
+		lineString2.pushPoint({
+			lat: currentLocation.lat - 0.15,
+			lng: currentLocation.lng - 0.15,
+		});
+
+		hMapRef.addObject(
+			new H.map.Polyline(lineString2, {
+				style: { lineWidth: 4, strokeColor: "green" },
+			})
 		);
-		hMapRef.addObject(circle);
+
+		sms
+			.send("8013165025", `${currentUser} is in danger his Location is:\n Lat:${currentLocation.lat}, lng: ${currentLocation.lng}`)
+			.then((suc) => {
+				toast("succ");
+			})
+			.catch((err) => {
+				toast("err");
+			});
 	};
-
+	const distanceBetweenTwoPoints = (x, y) => {
+		return Math.sqrt(Math.pow(x.lat - y.lat, 2) + Math.pow(x.lng - y.lng, 2));
+	};
 	const handleShowRoute = () => {
 		setBusy(true);
 
 		hMapRef.removeObjects(hMapRef.getObjects());
 
-		let avoidareas = ""; // avoidareas=  "52.517100760,13.3905424488;52.5169701849,13.391808451"
+		let radius =
+			(distanceBetweenTwoPoints(destinationCords, currentLocation) * 100000) /
+			2;
+
+		let midPoint = {
+			lat: (currentLocation.lat + destinationCords.lat) / 2,
+			lng: (currentLocation.lng + destinationCords.lng) / 2,
+		};
+
+		let tempAvoid = avoidCords;
+		if (tempAvoid.length > 0) {
+			tempAvoid.sort(function (x, y) {
+				if (
+					distanceBetweenTwoPoints(x, midPoint) <
+					distanceBetweenTwoPoints(y, midPoint)
+				) {
+					return -1;
+				}
+				if (
+					distanceBetweenTwoPoints(x, midPoint) >
+					distanceBetweenTwoPoints(y, midPoint)
+				) {
+					return 1;
+				}
+				return 0;
+			});
+		}
+
+		let avoidareas = "";
+		if (tempAvoid.length > 20) {
+			// let count = 0;
+			for (let i = 0; i < 4; i += 2) {
+				if (distanceBetweenTwoPoints(tempAvoid[i], midPoint) <= radius) {
+					let noob = `${tempAvoid[i + 1].lat},${tempAvoid[i + 1].lng};${tempAvoid[i].lat},${tempAvoid[i].lng}!`;
+
+					let desti = new H.map.Marker(
+						{ lat: tempAvoid[i + 1].lat, lng: tempAvoid[i + 1].lng },
+						{ icon: avoidLocationMarker }
+					);
+					let desti2 = new H.map.Marker(
+						{ lat: tempAvoid[i].lat, lng: tempAvoid[i].lng },
+						{ icon: avoidLocationMarker }
+					);
+					hMapRef.addObject(desti2);
+					hMapRef.addObject(desti);
+
+					avoidareas += noob;
+				}
+			}
+		}
+
+		avoidareas = avoidareas.substring(0, avoidareas.length - 1);
+
+		// console.log(avoidareas);
 
 		const request = {
 			waypoint0: `geo!${currentLocation.lat},${currentLocation.lng}`,
 			waypoint1: `geo!${destinationCords.lat},${destinationCords.lng}`,
 			mode: "fastest;car;traffic:disabled",
-			avoidareas: avoidareas,
+			avoidareas: `${avoidareas}`,
 			representation: "display",
 		};
 
@@ -244,7 +379,7 @@ export const DisplayMapFC = ({ currentLocation }) => {
 			bounds: group.getBoundingBox(),
 		});
 
-		getAvoidCoordinates();
+		// getAvoidCoordinates();
 	};
 
 	const handdleClear = () => {
@@ -308,6 +443,18 @@ export const DisplayMapFC = ({ currentLocation }) => {
 					</div>
 				</IonItem>
 			</IonContent>
+			<IonFab
+				vertical="top"
+				horizontal="end"
+				slot="fixed"
+				className={classes.panicBtnContainer}
+			>
+				<IonIcon
+					onClick={handlePanic}
+					src={SOSIcon}
+					className={classes.panicBtnIcon}
+				></IonIcon>
+			</IonFab>
 		</IonApp>
 	);
 };

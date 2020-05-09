@@ -41,7 +41,7 @@ const App: React.FC = () => (
         <PrivateRoute path="/profile" exact component={Profile} />
       </Switch>
     </div>
-    <PanicButton />
+    {/* <PanicButton /> */}
   </IonApp>
 );
 

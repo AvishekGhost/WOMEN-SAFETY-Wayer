@@ -3,8 +3,6 @@ import { DisplayMapFC } from "./DisplayMapFC";
 import { IonLoading, IonApp } from "@ionic/react";
 import { Geolocation } from "@ionic-native/geolocation";
 
-// const { Geolocation } = Plugins;
-
 const Maps: React.FC = () => {
 	const [currentLocation, setCurrentLocation] = useState<any>(null);
 	const [busy, setBusy] = useState<boolean>(false);
@@ -13,9 +11,13 @@ const Maps: React.FC = () => {
 		setBusy(true);
 		Geolocation.getCurrentPosition()
 			.then((resp) => {
+				// let temp: any = {
+				// 	lat: resp.coords.latitude,
+				// 	lng: resp.coords.longitude,
+				// };
 				let temp: any = {
-					lat: resp.coords.latitude,
-					lng: resp.coords.longitude,
+					lat: 22.5726,
+					lng: 88.3639,
 				};
 				setCurrentLocation(temp);
 			})
