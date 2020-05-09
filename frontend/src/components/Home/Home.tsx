@@ -15,6 +15,7 @@ const Home: React.FC = () => {
 			{currentUser ? (
 				<>
 					<Forum />
+
 				</>
 			) : (
 					<>
@@ -24,6 +25,7 @@ const Home: React.FC = () => {
 								<Register setFormDisplay={setFormDisplay} />
 							)}
 					</>
+
 				)}
 		</>
 	);

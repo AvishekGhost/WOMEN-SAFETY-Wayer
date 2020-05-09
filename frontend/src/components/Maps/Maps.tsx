@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { DisplayMapFC } from "./DisplayMapFC";
 import { IonLoading, IonApp } from "@ionic/react";
-import { Plugins } from "@capacitor/core";
+import { Geolocation } from "@ionic-native/geolocation";
 
-const { Geolocation } = Plugins;
+// const { Geolocation } = Plugins;
 
 const Maps: React.FC = () => {
 	const [currentLocation, setCurrentLocation] = useState<any>(null);

@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "../Toast/Toast";
 
-import JSZip from "jszip";
-import Axios from "axios";
-
 import {
 	IonInput,
 	IonButton,

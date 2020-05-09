@@ -4,7 +4,7 @@ import Nav from "react-bootstrap/Nav";
 
 import { AuthContext } from "../../context/authContext";
 
-import { Link, withRouter } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import classes from "./TopBar.module.css";
 
 import { home, map, personSharp } from "ionicons/icons";
@@ -18,25 +18,19 @@ const TopBar: React.FC = () => {
 			{currentUser ? (
 				<div className={classes.navTabBar}>
 					<Nav>
-						<Nav.Link>
-							<Link to="/" className={classes.whiteText}>
-								<IonIcon src={home} />
-							</Link>
-						</Nav.Link>
+						<NavLink to="/" className={classes.whiteText}>
+							<IonIcon src={home} />
+						</NavLink>
 					</Nav>
 					<Nav>
-						<Nav.Link>
-							<Link to="/maps" className={classes.whiteText}>
-								<IonIcon src={map} />
-							</Link>
-						</Nav.Link>
+						<NavLink to="/maps" className={classes.whiteText}>
+							<IonIcon src={map} />
+						</NavLink>
 					</Nav>
 					<Nav>
-						<Nav.Link>
-							<Link to="/profile">
-								<IonIcon src={personSharp} />
-							</Link>
-						</Nav.Link>
+						<NavLink to="/profile" className={classes.whiteText}>
+							<IonIcon src={personSharp} />
+						</NavLink>
 					</Nav>
 				</div>
 			) : null}

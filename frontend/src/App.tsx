@@ -27,6 +27,7 @@ import TopBar from "./components/Navbar/TopBar";
 import Home from "./components/Home/Home";
 import Maps from "./components/Maps/Maps";
 import Profile from "./components/Profile/Profile";
+import PanicButton from './components/PanicButton/PanicButton';
 
 import PrivateRoute from "./hoc/PrivateRoute";
 
@@ -40,6 +41,7 @@ const App: React.FC = () => (
         <PrivateRoute path="/profile" exact component={Profile} />
       </Switch>
     </div>
+    <PanicButton />
   </IonApp>
 );
 
